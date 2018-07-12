@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.ray.server.utils;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
