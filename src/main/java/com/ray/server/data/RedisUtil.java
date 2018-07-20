@@ -1,4 +1,4 @@
-package com.ray.server.utils;
+package com.ray.server.data;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,28 +60,28 @@ public class RedisUtil {
     private static void initialPool(){
         try {
 
-            JedisPoolConfig config = new JedisPoolConfig();
-            config.setMaxTotal(MAX_ACTIVE);
-            config.setMaxIdle(MAX_IDLE);
-            config.setMaxWaitMillis(MAX_WAIT);
-            config.setTestOnBorrow(TEST_ON_BORROW);
-            jedisPool = new JedisPool(config, ADDR0, PORT, TIMEOUT);
+             initJedis(ADDR0,PORT,TIMEOUT);
         } catch (Exception e) {
             logger.error("First create JedisPool error : "+e);
             try{
                 //如果第一个IP异常，则访问第二个IP
-                JedisPoolConfig config = new JedisPoolConfig();
-                config.setMaxTotal(MAX_ACTIVE);
-                config.setMaxIdle(MAX_IDLE);
-                config.setMaxWaitMillis(MAX_WAIT);
-                config.setTestOnBorrow(TEST_ON_BORROW);
-                jedisPool = new JedisPool(config, ADDR1, PORT, TIMEOUT);
+                initJedis(ADDR1,PORT,TIMEOUT);
             }catch(Exception e2){
                 logger.error("Second create JedisPool error : "+e2);
             }
         }
     }
 
+
+    private static void initJedis(String address,int port,int timeout){
+
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(MAX_ACTIVE);
+        config.setMaxIdle(MAX_IDLE);
+        config.setMaxWaitMillis(MAX_WAIT);
+        config.setTestOnBorrow(TEST_ON_BORROW);
+        jedisPool = new JedisPool(config, address, port, timeout);
+    }
 
     /**
      * 在多线程环境同步初始化
@@ -122,7 +122,8 @@ public class RedisUtil {
     public static void returnResource(final Jedis jedis) {
         if (jedis != null && jedisPool !=null) {
 //            jedisPool.returnResource(jedis);
-            jedis.close();
+            jedisPool.returnResource(jedis);
+//            jedis.close();
         }
 
     }

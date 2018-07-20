@@ -13,16 +13,6 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class AbstractController {
 
-//    @Value("${spring.redis.host}")
-    @Value("${spring.redis.host}")
-    private String host;
-    @RequestMapping(value="/doAction",method = RequestMethod.GET)
-    public String doAction(){
-
-        System.out.println(host);
-        return getSession().getId();
-    }
-
     public static HttpSession getSession() {
         HttpSession session = null;
         try {
