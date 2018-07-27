@@ -1,4 +1,4 @@
-package com.ray.server.data;
+package com.ray.server.service;
 
 public class DBAgent {
 

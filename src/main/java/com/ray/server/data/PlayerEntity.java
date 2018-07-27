@@ -2,6 +2,8 @@ package com.ray.server.data;
 
 public class PlayerEntity extends Entity{
 
+    public  static final String Table = "t_user";
+
     private long passportId;
 
     private long roleId;
